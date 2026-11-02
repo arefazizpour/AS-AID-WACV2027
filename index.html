@@ -19,13 +19,13 @@
   <meta property="og:title" content="Autonomous and Self-Adaptive AI-Generated Image Identification Systems">
   <meta property="og:description" content="Autonomous and Self-Adaptive AI-Generated Image Identification Systems (WACV 2027).">
   <meta property="og:url" content="https://arefazizpour.github.io/Autonomous-and-Self-Adaptive-AI-Generated-Image-Identification-Systems/">
-  <meta property="og:image" content="static/images/FlowChart-v3.jpg">
+  <meta property="og:image" content="static/images/teaser.jpg">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Autonomous and Self-Adaptive AI-Generated Image Identification Systems">
   <meta name="twitter:description" content="Autonomous and Self-Adaptive AI-Generated Image Identification Systems (WACV 2027).">
-  <meta name="twitter:image" content="static/images/FlowChart-v3.jpg">
+  <meta name="twitter:image" content="static/images/teaser.jpg">
 
   <!-- Academic / Citation Meta Tags -->
   <meta name="citation_title" content="Autonomous and Self-Adaptive AI-Generated Image Identification Systems">
@@ -34,6 +34,7 @@
   <meta name="citation_author" content="Stamm, Matthew C.">
   <meta name="citation_publication_date" content="2027">
   <meta name="citation_conference_title" content="IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.03615">
   
   <!-- Favicon and App Icons -->
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
@@ -69,7 +70,7 @@
             <h1 class="title is-1 publication-title">Autonomous and Self-Adaptive AI-Generated Image Identification Systems</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
-                <a href="mailto:aa4639@drexel.edu">Aref Azizpour</a><sup>1</sup>,
+                <a href="https://arefazizpour.github.io/" target="_blank">Aref Azizpour</a><sup>1</sup>,
               </span>
               <span class="author-block">
                 <a href="mailto:tdn47@drexel.edu">Tai D. Nguyen</a><sup>2</sup>,
@@ -92,7 +93,7 @@
               <div class="publication-links">
                 <!-- Paper Link -->
                 <span class="link-block">
-                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://arxiv.org/pdf/2504.03615" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
@@ -100,23 +101,23 @@
                   </a>
                 </span>
 
-                <!-- Code Link -->
+                <!-- arXiv Link -->
                 <span class="link-block">
-                  <a href="https://github.com/arefazizpour/Autonomous-and-Self-Adaptive-AI-Generated-Image-Identification-Systems" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <!-- ArXiv Link Placeholder -->
-                <span class="link-block">
-                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://arxiv.org/abs/2504.03615" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="ai ai-arxiv"></i>
                     </span>
                     <span>arXiv</span>
+                  </a>
+                </span>
+
+                <!-- Code Link -->
+                <span class="link-block">
+                  <a href="https://github.com/arefazizpour/Autonomous-and-Self-Adaptive-AI-Generated-Image-Identification-Systems" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
                   </a>
                 </span>
               </div>
@@ -127,13 +128,13 @@
     </div>
   </section>
 
-  <!-- Teaser / Pipeline Diagram -->
+  <!-- Teaser Figure (Figure 1 from paper) -->
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body has-text-centered">
-        <img src="static/images/FlowChart-v3.jpg" alt="AS-AID Framework Flowchart" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <img src="static/images/teaser.jpg" alt="Figure 1: AS-AID Framework Overview" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         <h2 class="subtitle has-text-centered" style="margin-top: 15px; font-size: 1.05rem;">
-          <strong>Figure:</strong> Overview of our <strong>AS-AID</strong> framework for autonomous and self-adaptive AI-generated image identification.
+          <strong>Figure 1:</strong> The <strong>AS-AID</strong> system autonomously detects, discovers, and adapts to new AI image sources without human intervention.
         </h2>
       </div>
     </div>
@@ -194,7 +195,7 @@
     <div class="container is-max-desktop content">
       <div class="bibtex-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 class="title is-3" style="margin-bottom: 0;">BibTeX</h2>
-        <button class="button is-small is-light" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+        <button id="copy-btn" class="button is-small is-light" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
           <span class="icon"><i class="fas fa-copy"></i></span>
           <span id="copy-btn-text">Copy</span>
         </button>
@@ -225,13 +226,47 @@
 
   <script>
     function copyBibTeX() {
-      const code = document.getElementById('bibtex-code').innerText;
-      navigator.clipboard.writeText(code).then(() => {
+      const bibtexElement = document.getElementById('bibtex-code');
+      const text = bibtexElement.innerText || bibtexElement.textContent;
+
+      function updateButton() {
         const btnText = document.getElementById('copy-btn-text');
-        btnText.innerText = 'Copied!';
-        setTimeout(() => { btnText.innerText = 'Copy'; }, 2000);
-      });
+        const btn = document.getElementById('copy-btn');
+        if (btnText) {
+          btnText.innerText = 'Copied!';
+          if (btn) btn.classList.add('is-success');
+          setTimeout(() => {
+            btnText.innerText = 'Copy';
+            if (btn) btn.classList.remove('is-success');
+          }, 2000);
+        }
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text.trim()).then(updateButton).catch(fallback);
+      } else {
+        fallback();
+      }
+
+      function fallback() {
+        const textArea = document.createElement('textarea');
+        textArea.value = text.trim();
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          updateButton();
+        } catch (err) {
+          console.error('Copy fallback failed: ', err);
+        }
+        document.body.removeChild(textArea);
+      }
     }
+
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
