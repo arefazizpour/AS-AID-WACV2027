@@ -36,10 +36,6 @@
   <meta name="citation_conference_title" content="IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)">
   <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.03615">
   
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
-  
   <!-- Critical CSS -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
@@ -195,9 +191,9 @@
     <div class="container is-max-desktop content">
       <div class="bibtex-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 class="title is-3" style="margin-bottom: 0;">BibTeX</h2>
-        <button id="copy-btn" class="button is-small is-light" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+        <button id="copy-btn" class="copy-bibtex-btn button is-small is-light" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
           <span class="icon"><i class="fas fa-copy"></i></span>
-          <span id="copy-btn-text">Copy</span>
+          <span class="copy-text" id="copy-btn-text">Copy</span>
         </button>
       </div>
       <pre id="bibtex-code"><code>@inproceedings{azizpour2027autonomous,
@@ -224,52 +220,5 @@
     </div>
   </footer>
 
-  <script>
-    function copyBibTeX() {
-      const bibtexElement = document.getElementById('bibtex-code');
-      const text = bibtexElement.innerText || bibtexElement.textContent;
-
-      function updateButton() {
-        const btnText = document.getElementById('copy-btn-text');
-        const btn = document.getElementById('copy-btn');
-        if (btnText) {
-          btnText.innerText = 'Copied!';
-          if (btn) btn.classList.add('is-success');
-          setTimeout(() => {
-            btnText.innerText = 'Copy';
-            if (btn) btn.classList.remove('is-success');
-          }, 2000);
-        }
-      }
-
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text.trim()).then(updateButton).catch(fallback);
-      } else {
-        fallback();
-      }
-
-      function fallback() {
-        const textArea = document.createElement('textarea');
-        textArea.value = text.trim();
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-          document.execCommand('copy');
-          updateButton();
-        } catch (err) {
-          console.error('Copy fallback failed: ', err);
-        }
-        document.body.removeChild(textArea);
-      }
-    }
-
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  </script>
 </body>
 </html>

@@ -5,6 +5,8 @@ function toggleMoreWorks() {
     const dropdown = document.getElementById('moreWorksDropdown');
     const button = document.querySelector('.more-works-btn');
     
+    if (!dropdown || !button) return;
+
     if (dropdown.classList.contains('show')) {
         dropdown.classList.remove('show');
         button.classList.remove('active');
@@ -20,7 +22,7 @@ document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('moreWorksDropdown');
     const button = document.querySelector('.more-works-btn');
     
-    if (container && !container.contains(event.target)) {
+    if (container && dropdown && button && !container.contains(event.target)) {
         dropdown.classList.remove('show');
         button.classList.remove('active');
     }
@@ -31,44 +33,70 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         const dropdown = document.getElementById('moreWorksDropdown');
         const button = document.querySelector('.more-works-btn');
-        dropdown.classList.remove('show');
-        button.classList.remove('active');
+        if (dropdown && button) {
+            dropdown.classList.remove('show');
+            button.classList.remove('active');
+        }
     }
 });
 
 // Copy BibTeX to clipboard
 function copyBibTeX() {
     const bibtexElement = document.getElementById('bibtex-code');
-    const button = document.querySelector('.copy-bibtex-btn');
-    const copyText = button.querySelector('.copy-text');
+    const button = document.querySelector('.copy-bibtex-btn') || document.getElementById('copy-btn');
+    const copyText = button ? (button.querySelector('.copy-text') || button) : null;
     
-    if (bibtexElement) {
-        navigator.clipboard.writeText(bibtexElement.textContent).then(function() {
-            // Success feedback
+    if (!bibtexElement) {
+        console.warn('BibTeX element #bibtex-code not found.');
+        return;
+    }
+    
+    const textToCopy = (bibtexElement.innerText || bibtexElement.textContent).trim();
+    
+    function onSuccess() {
+        if (button) {
             button.classList.add('copied');
-            copyText.textContent = 'Cop';
-            
-            setTimeout(function() {
+        }
+        if (copyText) {
+            copyText.textContent = 'Copied!';
+        }
+        setTimeout(function() {
+            if (button) {
                 button.classList.remove('copied');
+            }
+            if (copyText) {
                 copyText.textContent = 'Copy';
-            }, 2000);
-        }).catch(function(err) {
-            console.error('Failed to copy: ', err);
-            // Fallback for older browsers
-            const textArea = document.createElement('textarea');
-            textArea.value = bibtexElement.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            button.classList.add('copied');
-            copyText.textContent = 'Cop';
-            setTimeout(function() {
-                button.classList.remove('copied');
-                copyText.textContent = 'Copy';
-            }, 2000);
-        });
+            }
+        }, 2000);
+    }
+    
+    function fallbackCopy() {
+        const textArea = document.createElement('textarea');
+        textArea.value = textToCopy;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '-9999px';
+        textArea.style.left = '-9999px';
+        textArea.setAttribute('readonly', '');
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, 99999);
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                onSuccess();
+            } else {
+                console.error('execCommand copy returned false');
+            }
+        } catch (err) {
+            console.error('Fallback copy failed: ', err);
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(onSuccess).catch(fallbackCopy);
+    } else {
+        fallbackCopy();
     }
 }
 
@@ -83,60 +111,30 @@ function scrollToTop() {
 // Show/hide scroll to top button
 window.addEventListener('scroll', function() {
     const scrollButton = document.querySelector('.scroll-to-top');
-    if (window.pageYOffset > 300) {
-        scrollButton.classList.add('visible');
-    } else {
-        scrollButton.classList.remove('visible');
+    if (scrollButton) {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('visible');
+        } else {
+            scrollButton.classList.remove('visible');
+        }
     }
 });
 
-// Video carousel autoplay when in view
-function setupVideoCarouselAutoplay() {
-    const carouselVideos = document.querySelectorAll('.results-carousel video');
-    
-    if (carouselVideos.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                // Video is in view, play it
-                video.play().catch(e => {
-                    // Autoplay failed, probably due to browser policy
-                    console.log('Autoplay prevented:', e);
-                });
-            } else {
-                // Video is out of view, pause it
-                video.pause();
-            }
-        });
-    }, {
-        threshold: 0.5 // Trigger when 50% of the video is visible
-    });
-    
-    carouselVideos.forEach(video => {
-        observer.observe(video);
-    });
-}
-
+// Document ready initialization
 $(document).ready(function() {
-    // Check for click events on the navbar burger icon
-
-    var options = {
-		slidesToScroll: 1,
-		slidesToShow: 1,
-		loop: true,
-		infinite: true,
-		autoplay: true,
-		autoplaySpeed: 5000,
+    if (typeof bulmaCarousel !== 'undefined') {
+        const options = {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            loop: true,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 5000,
+        };
+        bulmaCarousel.attach('.carousel', options);
     }
-
-	// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
-	
-    bulmaSlider.attach();
     
-    // Setup video autoplay for carousel
-    setupVideoCarouselAutoplay();
-
-})
+    if (typeof bulmaSlider !== 'undefined') {
+        bulmaSlider.attach();
+    }
+});
