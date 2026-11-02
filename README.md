@@ -57,7 +57,4 @@ If you find this work or codebase useful in your research, please cite:
 ---
 
 ## ✉️ Contact
-For questions or inquiries, please open an issue or contact:
-* **Aref Azizpour**: [aa4639@drexel.edu](mailto:aa4639@drexel.edu) ([Website](https://arefazizpour.github.io/))
-* **Tai D. Nguyen**: [tdn47@drexel.edu](mailto:tdn47@drexel.edu)
-* **Matthew C. Stamm**: [mcs382@drexel.edu](mailto:mcs382@drexel.edu)
+For questions or issues, please open an issue or contact me at `aa4639@drexel.edu` ([Website](https://arefazizpour.github.io/)).
